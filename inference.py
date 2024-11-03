@@ -12,7 +12,7 @@ EYETRACKING_DATA_PATH = os.getenv('EYETRACKING_DATA_PATH')
 HEARTRATE_DATA_PATH = os.getenv('HEARTRATE_DATA_PATH')
 MODEL_PATH = os.getenv('MODEL_PATH')
 
-def predict_vo2max(EYETRACKING_DATA_PATH, HEARTRATE_DATA_PATH, MODEL_PATH ):
+def predict_vo2max(EYETRACKING_DATA_PATH, HEARTRATE_DATA_PATH, MODEL_PATH):
     """
     Load Eyetracking and Heartrate CSV data and predict the VO2MAX from both data
 
