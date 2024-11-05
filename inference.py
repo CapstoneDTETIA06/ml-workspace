@@ -255,4 +255,41 @@ def predict_vo2max(EYETRACKING_DATA_PATH, HEARTRATE_DATA_PATH, MODEL_PATH):
 
     return prediction[0]
 
+def classify_vo2max(vo2max, sex):
+    """
+    Load Eyetracking and Heartrate CSV data and predict the VO2MAX from both data
+
+    Parameters:
+    ----------
+    vo2max : float
+        Directory Path of Eyetracking CSV file
+    sex : bool
+        Path of Heartrate CSV file
+
+    Returns:
+    -------
+    predictions : int 
+        The classification of fitness based on VO2MAX and sex value.
+        Label:
+        0 -> Low Fitness
+        1 -> Average Fitness
+        2 -> Good Fitness
+
+    """
+    if sex == 1:
+        if vo2max < 37:
+            return 0
+        elif vo2max > 37 and vo2max < 52:
+            return 1
+        else:
+            return 2
+        
+    elif sex == 0:
+        if vo2max < 33:
+            return 0
+        elif vo2max > 33 and vo2max < 47:
+            return 1
+        else:
+            return 2
+
 predict_vo2max(EYETRACKING_DATA_PATH, HEARTRATE_DATA_PATH, MODEL_PATH )
