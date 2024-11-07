@@ -255,7 +255,7 @@ def predict_vo2max(EYETRACKING_DATA_PATH, HEARTRATE_DATA_PATH, MODEL_PATH):
 
     return prediction[0]
 
-def predict_vo2max_v2(FOLDER_PATH, id, model_path, HR_before, age, weight, height):
+def predict_vo2max_v2(FOLDER_PATH, id, model_path, HR_before, age, weight, height, sex):
     """
     Load Eyetracking and Heartrate CSV data and predict the VO2MAX from both data
 
@@ -435,7 +435,15 @@ def predict_vo2max_v2(FOLDER_PATH, id, model_path, HR_before, age, weight, heigh
     df_engineered = pd.merge(df_sp, df_latency, left_on='row_id', right_on='row_id',how='inner')
 
     df_engineered = df_engineered.drop(['index', 'id_x', 'id_y'], axis = 1)
-    df_engineered['vo2_max'] = 111.33 - 0.42 * df_engineered['HR_after']
+
+    def count_vo2max_male(row, age, height, weight):
+        return (70.597 - 0.246*age + 0.077*height - 0.222*weight - 0.147*row['HR_after'] )
+
+    def count_vo2max_female(row, age, height, weight):
+        return (70.597 -  0.185*age + 0.097*height - 0.246*weight - 0.122*row['HR_after'] )
+
+    
+    df_engineered['vo2_max'] = df_engineered.apply(lambda row: count_vo2max_male(row, age, height, weight) if row['sex'] == 1 else count_vo2max_female(row, age, height, weight), axis=1)
     
     # Feature Selection
     df_engineered = df_engineered.dropna()
